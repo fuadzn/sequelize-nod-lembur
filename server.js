@@ -1,4 +1,5 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const app = express();
@@ -19,6 +20,11 @@ app.use(express.urlencoded({ extended: true }));
 
 const router = require("./routes/lemburRouter.js");
 app.use("/api/lemburs", router);
+// routes
+require("./routes/authRouter.js")(app);
+require("./routes/userRouter.js")(app);
+// require('./routes/authRouter.js')(app);
+// require('./routes/userRouter.js')(app);
 
 // testing api
 

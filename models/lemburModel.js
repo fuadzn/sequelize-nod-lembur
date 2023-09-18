@@ -3,6 +3,9 @@ const { sequelize } = require(".");
 
 module.exports = (sequelize, DataTypes) => {
   const Lembur = sequelize.define("lembur", {
+    user_id: {
+      type: DataTypes.INTEGER,
+    },
     tanggal: {
       type: DataTypes.DATE,
       allowNull: true,
