@@ -1,4 +1,8 @@
 const db = require("../models");
+const moment = require("moment");
+const sequelize = require("sequelize");
+const { Op } = require("sequelize");
+
 
 // create main Model
 const Lembur = db.lembur;
@@ -24,8 +28,25 @@ const addLembur = async (req, res) => {
 // 2. get all lembur
 
 const getAllLemburs = async (req, res) => {
+  var month = moment().month() + 1;
+  var year = moment().year();
+  let startDate = new moment(year + "-" + (month - 1) + "-20", "YYYY-MM-DD");
+  let endDate = new moment(year + "-" + month + "-20", "YYYY-MM-DD");
   let lemburs = await Lembur.findAll({
     attributes: ["tanggal", "jam_mulai", "jam_selesai", "tentang", "alasan"],
+    // where: [
+    //   sequelize.where(sequelize.fn("month", sequelize.col("tanggal")), month),
+    // ],
+    // where: [
+    //   sequelize.where(sequelize.fn("month", sequelize.col("tanggal")), month),
+    //   sequelize.where(sequelize.fn("year", sequelize.col("tanggal")), year),
+    // ],
+    where: {
+      tanggal: {
+        [Op.gt]: startDate,
+        [Op.lt]: endDate,
+      },
+    },
   });
   res.status(200).send(lemburs);
 };
